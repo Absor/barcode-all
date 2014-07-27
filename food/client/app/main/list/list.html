@@ -2,7 +2,7 @@
 
 <ul class="list-group">
     <li class="list-group-item noborder" ng-repeat="group in groups" ng-if="haveAmount(group) < group.needAmount">
-        <span class="pull-right">{{group.needAmount - group.haveAmount}}</span>
+        <span class="pull-right">{{group.needAmount - haveAmount(group)}}</span>
         {{group.name}}
     </li>
 </ul>
