@@ -76,7 +76,7 @@ exports.add = function(req, res) {
 exports.remove = function(req, res) {
     Product.findOne({code: req.params.code}).populate('_groupId').exec(function (err, product) {
         if (err) { return handleError(res, err); }
-        if(!product) { return exports.create(req, res); } // just use create method
+        if(!product) { return res.send(404); }
         if(!product._groupId) { return res.json(200, product); }
 
         var group = product._groupId;

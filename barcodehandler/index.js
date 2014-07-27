@@ -78,8 +78,6 @@ function addBook(isbn) {
             },
             function (error, response, body) {
                 if (!error && response.statusCode == 201) {
-                    bookServiceToken = body.token;
-                    bookServiceTokenRefreshed = Date.now();
                     console.log('book added');
                 }
             }
@@ -99,8 +97,6 @@ function removeBook(isbn) {
             },
             function (error, response, body) {
                 if (!error && response.statusCode == 200) {
-                    bookServiceToken = body.token;
-                    bookServiceTokenRefreshed = Date.now();
                     console.log('book deleted');
                 }
             }
@@ -124,7 +120,7 @@ function loginToFoodService(callback) {
     }
 
     request.post(
-        {url: 'http://localhost:9000/auth/local', json: foodUserInfo, jar: true},
+        {url: 'http://food.tassi.fi/auth/local', json: foodUserInfo, jar: true},
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 foodServiceToken = body.token;
@@ -147,8 +143,6 @@ function addFood(barcode) {
             },
             function (error, response, body) {
                 if (!error && response.statusCode == 201) {
-                    foodServiceToken = body.token;
-                    foodServiceTokenRefreshed = Date.now();
                     console.log('food added');
                 }
             }
@@ -167,8 +161,6 @@ function removeFood(barcode) {
             },
             function (error, response, body) {
                 if (!error && response.statusCode == 200) {
-                    foodServiceToken = body.token;
-                    foodServiceTokenRefreshed = Date.now();
                     console.log('food deleted');
                 }
             }
