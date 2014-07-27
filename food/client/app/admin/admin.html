@@ -1,7 +1,10 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-  <p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>
+    <div class="page-header" style="margin-top: 10px">
+        <h3>Users</h3>
+    </div>
+
   <ul class="list-group">
     <li class="list-group-item" ng-repeat="user in users">
         <strong>{{user.name}}</strong><br>
@@ -10,3 +13,5 @@
     </li>
   </ul>
 </div>
+
+<div ng-include="'app/account/signup/signup.html'"></div>

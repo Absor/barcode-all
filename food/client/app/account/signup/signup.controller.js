@@ -15,8 +15,7 @@ angular.module('foodApp')
           password: $scope.user.password
         })
         .then( function() {
-          // Account created, redirect to home
-          $location.path('/');
+                // TODO user created ok
         })
         .catch( function(err) {
           err = err.data;

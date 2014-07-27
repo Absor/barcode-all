@@ -1,9 +1,7 @@
-<div ng-include="'components/navbar/navbar.html'"></div>
-
-<div class="container">
+<div class="container" ng-controller="SignupCtrl">
   <div class="row">
     <div class="col-sm-12">
-      <h1>Sign up</h1>
+      <h1>New user</h1>
     </div>
     <div class="col-sm-12">
       <form class="form" name="form" ng-submit="register(form)" novalidate>
@@ -41,7 +39,7 @@
                                             'has-error': form.password.$invalid && submitted }">
           <label>Password</label>
 
-          <input type="password" name="password" class="form-control" ng-model="user.password"
+          <input type="text" name="password" class="form-control" ng-model="user.password"
                  ng-minlength="3"
                  required
                  mongoose-error/>
@@ -56,14 +54,9 @@
 
         <div>
           <button class="btn btn-inverse btn-lg btn-login" type="submit">
-            Sign up
+            Create
           </button>
-          <a class="btn btn-default btn-lg btn-register" href="/login">
-            Login
-          </a>
         </div>
-
-        
       </form>
     </div>
   </div>

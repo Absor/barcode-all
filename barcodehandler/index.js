@@ -2,7 +2,12 @@ var request = require('request');
 var stdin = process.stdin;
 stdin.resume();
 
-var userInfo = {
+var bookUserInfo = {
+    email: 'test@test.com',
+    password: 'test'
+};
+
+var foodUserInfo = {
     email: 'test@test.com',
     password: 'test'
 };
@@ -50,7 +55,7 @@ function loginToBookService(callback) {
     }
 
     request.post(
-        {url: 'http://localhost:9000/auth/local', json: userInfo, jar: true},
+        {url: 'http://localhost:9000/auth/local', json: bookUserInfo, jar: true},
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 bookServiceToken = body.token;
@@ -119,7 +124,7 @@ function loginToFoodService(callback) {
     }
 
     request.post(
-        {url: 'http://localhost:9000/auth/local', json: userInfo, jar: true},
+        {url: 'http://localhost:9000/auth/local', json: foodUserInfo, jar: true},
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 foodServiceToken = body.token;
