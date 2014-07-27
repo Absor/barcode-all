@@ -21,7 +21,6 @@ GroupSchema
             if (err) {
                 next(new Error('Database error.'));
             } else {
-                console.info(numberAffected + " updated.")
                 next();
             }
         });

@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
-var Group = require('../group/group.model');
+var Entry = require('../entry/entry.model');
 
 var ProductSchema = new Schema({
     code: {type: String, required: true, unique: true, default: 715517},
@@ -18,5 +18,16 @@ ProductSchema
     .validate(function(name) {
         return name.length > 1;
     }, 'Name has to be at least 2 characters long.');
+
+ProductSchema
+    .pre('remove', function(next) {
+        Entry.remove({_productId: this._id}, function(err) {
+            if (err) {
+                next(new Error('Database error.'));
+            } else {
+                next();
+            }
+        });
+    });
 
 module.exports = mongoose.model('Product', ProductSchema);

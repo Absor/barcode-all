@@ -25,6 +25,7 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   Product.create(req.body, function(err, product) {
     if(err) { return handleError(res, err); }
+      Entry.create({_productId: product._id, action: "add"});
     return res.json(201, product);
   });
 };
