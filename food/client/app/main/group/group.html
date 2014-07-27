@@ -8,16 +8,24 @@
     </div>
     <ul class="list-group">
         <li class="list-group-item" ng-repeat="product in grouplessProducts()" draggable="true" effect-allowed="move" draggable-data="{productId: product._id}" draggable-type="object-group{{group._id}}">
-            {{product.name}}, have {{product.haveAmount}}
-            <div class="btn-group btn-group-xs pull-right">
-                <button type="button" class="btn btn-default" ng-click="removeAmount(product)">
-                    <span class="glyphicon glyphicon-minus"></span> {{product.removeAmount}}
-                </button>
-                <button type="button" class="btn btn-default" ng-click="addAmount(product)">
-                    <span class="glyphicon glyphicon-plus"></span> {{product.addAmount}}
-                </button>
+            <div class="row">
+                <div class="col-xs-4">
+                    {{product.name}}, <strong>{{product.haveAmount}}</strong>
+                </div>
+                <div class="col-xs-5">
+                    <input type="text" ng-model="selected" ng-model="product._groupId" typeahead-on-select="changeGroup($item, product)" typeahead="group.name for group in groups | filter:$viewValue | limitTo:3" class="form-control">
+                </div>
+                <div class="col-xs-3">
+                    <div class="btn-group btn-group-xs pull-right">
+                        <button type="button" class="btn btn-default" ng-click="removeAmount(product)">
+                            <span class="glyphicon glyphicon-minus"></span> {{product.removeAmount}}
+                        </button>
+                        <button type="button" class="btn btn-default" ng-click="addAmount(product)">
+                            <span class="glyphicon glyphicon-plus"></span> {{product.addAmount}}
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="clearfix"></div>
         </li>
     </ul>
 </div>
@@ -27,13 +35,13 @@
         <div class="panel panel-default" drop="onDropToGroup($data, group._id)" drop-effect="move" drop-accept="acceptChecker('json/object-group{{group._id}}')" drag-over-class="panel-success" >
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <span editable-text="group.name" onbeforesave="saveGroup($data, group)">{{group.name}}</span>, have {{haveAmount(group)}}
+                    <span editable-text="group.name" onbeforesave="saveGroup($data, group)">{{group.name}}</span>, <strong>{{haveAmount(group)}}</strong>
                     <span class="glyphicon glyphicon-trash pull-right trash-icon" ng-really-click="deleteGroup(group)" ng-really-message="Delete {{group.name}}?"></span>
                 </h3>
             </div>
             <ul class="list-group">
                 <li class="list-group-item" ng-repeat="product in productsOfAGroup(group._id)"draggable="true" effect-allowed="move" draggable-data="{productId: product._id}" draggable-type="object-group{{group._id}}">
-                    {{product.name}}
+                    {{product.name}}, <strong>{{product.haveAmount}}</strong>
                     <div class="btn-group btn-group-xs pull-right">
                         <button type="button" class="btn btn-default" ng-click="removeAmount(product)">
                             <span class="glyphicon glyphicon-minus"></span> {{product.removeAmount}}

@@ -2,6 +2,18 @@
 
 angular.module('foodApp')
   .controller('GroupCtrl', function ($scope, $http, $q) {
+        $scope.changeGroup = function(group, product) {
+            var oldGroupId = product._groupId;
+            product._groupId = group._id;
+
+            $http.put('/api/products/'+product._id, {_groupId: group._id}).success(function(data) {
+                // TODO jokin indikaattori
+            }).error(function(error) {
+                    // TODO jokin indikaattori
+                    product._groupId = oldGroupId;
+                });
+        }
+
         $scope.onDropToGroup = function(container, newGroupId) {
             var key = Object.keys(container)[0];
             var data = container[key];
