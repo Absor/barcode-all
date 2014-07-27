@@ -1,0 +1,4 @@
+<dl class="dl-horizontal">
+    <dt ng-repeat-start="entry in entries">{{entry.timestamp | date : 'dd.MM.yyyy HH:mm'}}</dt>
+    <dd ng-repeat-end>{{entry.action}} {{getProduct(entry._productId).name}}</dd>
+</dl>

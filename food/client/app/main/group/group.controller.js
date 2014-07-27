@@ -66,4 +66,24 @@ angular.module('foodApp')
                     });
                 });
         }
+
+        $scope.addAmount = function(product) {
+            $http.post('/api/products/add', {code: product.code})
+                .success(function(data) {
+                    // TODO indikaattori
+                }).error(function(error) {
+                    // TODO indikaattori
+                });
+        }
+
+        $scope.removeAmount = function(product) {
+            $http.delete('/api/products/'+product.code+'/remove')
+                .success(function(data) {
+                    // TODO indikaattori
+                    console.log(data)
+                }).error(function(error) {
+                    // TODO indikaattori
+                    console.log(error)
+                });
+        }
   });

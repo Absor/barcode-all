@@ -72,7 +72,6 @@ function addBook(isbn) {
                 }
             },
             function (error, response, body) {
-                console.log(response.statusCode);
                 if (!error && response.statusCode == 201) {
                     bookServiceToken = body.token;
                     bookServiceTokenRefreshed = Date.now();
@@ -94,7 +93,6 @@ function removeBook(isbn) {
                 }
             },
             function (error, response, body) {
-                console.log(response.statusCode);
                 if (!error && response.statusCode == 200) {
                     bookServiceToken = body.token;
                     bookServiceTokenRefreshed = Date.now();
@@ -136,14 +134,13 @@ function addFood(barcode) {
     loginToFoodService(function() {
         request.post(
             {
-                url: 'http://localhost:9000/api/products',
-                json: {_id: barcode},
+                url: 'http://food.tassi.fi/api/products/add',
+                json: {code: barcode},
                 headers: {
                     'Authorization': 'Bearer ' + foodServiceToken
                 }
             },
             function (error, response, body) {
-                console.log(response.statusCode);
                 if (!error && response.statusCode == 201) {
                     foodServiceToken = body.token;
                     foodServiceTokenRefreshed = Date.now();
@@ -158,14 +155,12 @@ function removeFood(barcode) {
     loginToFoodService(function() {
         request.del(
             {
-                url: 'http://localhost:9000/api/products',
-                json: {barcode: barcode},
+                url: 'http://food.tassi.fi/api/products/'+barcode+'/remove',
                 headers: {
                     'Authorization': 'Bearer ' + foodServiceToken
                 }
             },
             function (error, response, body) {
-                console.log(response.statusCode);
                 if (!error && response.statusCode == 200) {
                     foodServiceToken = body.token;
                     foodServiceTokenRefreshed = Date.now();

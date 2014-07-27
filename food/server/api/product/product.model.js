@@ -6,7 +6,7 @@ var Group = require('../group/group.model');
 
 var ProductSchema = new Schema({
     code: {type: String, required: true, unique: true, default: 715517},
-    _groupId: {type: Schema.Types.ObjectId, default: null},
+    _groupId: {type: Schema.Types.ObjectId, default: null, ref: 'Group'},
     name: {type: String, required: true, default: 'New product'},
     addAmount: {type: Number, required: true, default: 0, min: 0},
     removeAmount: {type: Number, required: true, default: 0, min: 0}

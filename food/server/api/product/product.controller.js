@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Product = require('./product.model');
+var Entry = require('../entry/entry.model');
 
 // Get list of products
 exports.index = function(req, res) {
@@ -52,6 +53,44 @@ exports.destroy = function(req, res) {
       return res.send(204);
     });
   });
+};
+
+// From the barcode reader
+exports.add = function(req, res) {
+    Product.findOne({code: req.body.code}).populate('_groupId').exec(function (err, product) {
+        if (err) { return handleError(res, err); }
+        if(!product) { return exports.create(req, res); } // just use create method
+        if(!product._groupId) { return res.json(200, product); }
+
+        var group = product._groupId;
+        group.haveAmount += product.addAmount;
+
+        group.save(function (err) {
+            if (err) { return handleError(res, err); }
+            Entry.create({_productId: product._id, action: "add"});
+            return res.json(200, product);
+        });
+    });
+};
+
+exports.remove = function(req, res) {
+    Product.findOne({code: req.params.code}).populate('_groupId').exec(function (err, product) {
+        if (err) { return handleError(res, err); }
+        if(!product) { return exports.create(req, res); } // just use create method
+        if(!product._groupId) { return res.json(200, product); }
+
+        var group = product._groupId;
+        group.haveAmount -= product.removeAmount;
+        if (group.haveAmount <= 0) {
+            group.haveAmount = 0;
+        }
+
+        group.save(function (err) {
+            if (err) { return handleError(res, err); }
+            Entry.create({_productId: product._id, action: "remove"});
+            return res.json(200, product);
+        });
+    });
 };
 
 function handleError(res, err) {

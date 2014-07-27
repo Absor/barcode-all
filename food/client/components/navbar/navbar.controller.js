@@ -5,6 +5,9 @@ angular.module('foodApp')
     $scope.menu = [{
         title: 'Home',
         state: 'main.list'
+    },{
+        title: 'Logs',
+        state: 'main.log'
     }];
 
     $scope.editMenu = [{
