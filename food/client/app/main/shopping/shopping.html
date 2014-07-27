@@ -1,0 +1,37 @@
+<div class="page-header" style="margin-top: 10px">
+    <h3>Edit shopping list</h3>
+</div>
+
+<table class="table table-bordered table-hover table-condensed">
+    <tr style="font-weight: bold">
+        <td>Name</td>
+        <td>Need</td>
+        <td style="width:1%">Edit</td>
+    </tr>
+    <tr ng-repeat="group in groups">
+        <td>
+        <span editable-text="group.name" e-name="name" e-form="rowform">
+          {{group.name}}
+        </span>
+        </td>
+        <td>
+        <span editable-number="group.needAmount" e-name="needAmount" e-min="0" e-form="rowform">
+          {{group.needAmount}}
+        </span>
+        </td>
+        <td style="white-space: nowrap">
+            <!-- form -->
+            <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" onbeforesave="saveGroup($data, group)">
+                <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                    save
+                </button>
+                <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                    cancel
+                </button>
+            </form>
+            <div class="buttons" ng-show="!rowform.$visible">
+                <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+            </div>
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,24 @@
+<div class="page-header" style="margin-top: 10px">
+    <h3>Edit product groups<div class="btn btn-link pull-right" ng-click="addNewGroup()">New group</div><div class="clearfix"></div></h3>
+</div>
+
+<div class="panel panel-default" drop="onDropToGroup($data, null)" drop-effect="move" drop-accept="acceptChecker('json/object-group{{group._id}}')" drag-over-class="panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title">Ungrouped</h3>
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="product in grouplessProducts()" draggable="true" effect-allowed="move" draggable-data="{productId: product._id}" draggable-type="object-group{{group._id}}">{{product.name}}</li>
+    </ul>
+</div>
+
+<div class="panel panel-default" ng-repeat="group in groups" drop="onDropToGroup($data, group._id)" drop-effect="move" drop-accept="acceptChecker('json/object-group{{group._id}}')" drag-over-class="panel-success" >
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <span editable-text="group.name" onbeforesave="saveGroup($data, group)">{{group.name}}</span>
+            <span class="glyphicon glyphicon-trash pull-right trash-icon" ng-really-click="deleteGroup(group)" ng-really-message="Delete {{group.name}}?"></span>
+        </h3>
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="product in productsOfAGroup(group._id)"draggable="true" effect-allowed="move" draggable-data="{productId: product._id}" draggable-type="object-group{{group._id}}">{{product.name}}</li>
+    </ul>
+</div>

@@ -18,7 +18,8 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
-  require('../api/book/book.socket').register(socket);
+  require('../api/product/product.socket').register(socket);
+  require('../api/group/group.socket').register(socket);
 }
 
 module.exports = function (socketio) {

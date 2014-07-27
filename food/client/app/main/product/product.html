@@ -1,0 +1,101 @@
+<div class="page-header" style="margin-top: 10px">
+    <h3>Edit products<div class="btn btn-link pull-right" ng-click="addNewProduct()">New product</div><div class="clearfix"></div></h3>
+</div>
+
+<h4>Ungrouped</h4>
+
+<table class="table table-bordered table-hover table-condensed">
+    <tr style="font-weight: bold">
+        <td>Name</td>
+        <td>Code</td>
+        <td>Amount added</td>
+        <td>Amount removed</td>
+        <td style="width:1%">Edit</td>
+    </tr>
+    <tr ng-repeat="product in products" ng-if="product._groupId === null">
+        <td>
+        <span editable-text="product.name" e-name="name" e-form="rowform">
+          {{product.name}}
+        </span>
+        </td>
+        <td>
+        <span editable-text="product.code" e-name="code" e-form="rowform">
+          {{product.code}}
+        </span>
+        </td>
+        <td>
+        <span editable-number="product.addAmount" e-min="0" e-name="addAmount" e-form="rowform">
+          {{product.addAmount}}
+        </span>
+        </td>
+        <td>
+        <span editable-number="product.removeAmount" e-min="0" e-name="removeAmount" e-form="rowform">
+          {{product.removeAmount}}
+        </span>
+        </td>
+        <td style="white-space: nowrap">
+            <!-- form -->
+            <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" onbeforesave="saveProduct($data, product)">
+                <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                    save
+                </button>
+                <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                    cancel
+                </button>
+            </form>
+            <div class="buttons" ng-show="!rowform.$visible">
+                <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+                <button class="btn btn-danger" ng-really-click="deleteProduct(product)" ng-really-message="Delete {{product.name}}?">del</button>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<h4>Grouped</h4>
+
+<table class="table table-bordered table-hover table-condensed">
+    <tr style="font-weight: bold">
+        <td>Name</td>
+        <td>Code</td>
+        <td>Amount added</td>
+        <td>Amount removed</td>
+        <td style="width:1%">Edit</td>
+    </tr>
+    <tr ng-repeat="product in products" ng-if="product._groupId !== null">
+        <td>
+        <span editable-text="product.name" e-name="name" e-form="rowform">
+          {{product.name}}
+        </span>
+        </td>
+        <td>
+        <span editable-text="product.code" e-name="code" e-form="rowform">
+          {{product.code}}
+        </span>
+        </td>
+        <td>
+        <span editable-number="product.addAmount" e-min="0" e-name="addAmount" e-form="rowform">
+          {{product.addAmount}}
+        </span>
+        </td>
+        <td>
+        <span editable-number="product.removeAmount" e-min="0" e-name="removeAmount" e-form="rowform">
+          {{product.removeAmount}}
+        </span>
+        </td>
+        <td style="white-space: nowrap">
+            <!-- form -->
+            <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" onbeforesave="saveProduct($data, product)">
+                <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                    save
+                </button>
+                <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                    cancel
+                </button>
+            </form>
+            <div class="buttons" ng-show="!rowform.$visible">
+                <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+                <button class="btn btn-danger" ng-really-click="deleteProduct(product)" ng-really-message="Delete {{product.name}}?">del</button>
+            </div>
+        </td>
+    </tr>
+</table>

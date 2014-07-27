@@ -22,8 +22,10 @@ stdin.on('data', function (data) {
                 removeBook(trimmed);
                 break;
             case 'add food':
+                addFood(trimmed);
                 break;
             case 'remove food':
+                removeFood(trimmed);
                 break;
         }
         command = null;
@@ -32,15 +34,17 @@ stdin.on('data', function (data) {
     }
 });
 
-var token = null;
-var timeRefreshed = Date.now();
+// BOOKS
 
-function checkToken(callback) {
-    if (Date.now() - timeRefreshed > 14400000) {
-        token = null;
+var bookServiceToken = null;
+var bookServiceTokenRefreshed = Date.now();
+
+function loginToBookService(callback) {
+    if (Date.now() - bookServiceTokenRefreshed > 14400000) {
+        bookServiceToken = null;
     }
 
-    if (token !== null) {
+    if (bookServiceToken !== null) {
         callback();
         return;
     }
@@ -49,8 +53,8 @@ function checkToken(callback) {
         {url: 'http://localhost:9000/auth/local', json: userInfo, jar: true},
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                token = body.token;
-                timeRefreshed = Date.now();
+                bookServiceToken = body.token;
+                bookServiceTokenRefreshed = Date.now();
                 callback();
             }
         }
@@ -58,20 +62,20 @@ function checkToken(callback) {
 }
 
 function addBook(isbn) {
-    checkToken(function() {
+    loginToBookService(function() {
         request.post(
             {
                 url: 'http://localhost:9000/api/things',
                 json: {isbn: isbn},
                 headers: {
-                    'Authorization': 'Bearer ' + token
+                    'Authorization': 'Bearer ' + bookServiceToken
                 }
             },
             function (error, response, body) {
                 console.log(response.statusCode);
                 if (!error && response.statusCode == 201) {
-                    token = body.token;
-                    timeRefreshed = Date.now();
+                    bookServiceToken = body.token;
+                    bookServiceTokenRefreshed = Date.now();
                     console.log('book added');
                 }
             }
@@ -80,21 +84,92 @@ function addBook(isbn) {
 }
 
 function removeBook(isbn) {
-    checkToken(function() {
+    loginToBookService(function() {
         request.del(
             {
                 url: 'http://localhost:9000/api/things',
                 json: {isbn: isbn},
                 headers: {
-                    'Authorization': 'Bearer ' + token
+                    'Authorization': 'Bearer ' + bookServiceToken
                 }
             },
             function (error, response, body) {
                 console.log(response.statusCode);
                 if (!error && response.statusCode == 200) {
-                    token = body.token;
-                    timeRefreshed = Date.now();
+                    bookServiceToken = body.token;
+                    bookServiceTokenRefreshed = Date.now();
                     console.log('book deleted');
+                }
+            }
+        );
+    });
+}
+
+// FOODS
+
+var foodServiceToken = null;
+var foodServiceTokenRefreshed = Date.now();
+
+function loginToFoodService(callback) {
+    if (Date.now() - foodServiceTokenRefreshed > 14400000) {
+        foodServiceToken = null;
+    }
+
+    if (foodServiceToken !== null) {
+        callback();
+        return;
+    }
+
+    request.post(
+        {url: 'http://localhost:9000/auth/local', json: userInfo, jar: true},
+        function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                foodServiceToken = body.token;
+                foodServiceTokenRefreshed = Date.now();
+                callback();
+            }
+        }
+    );
+}
+
+function addFood(barcode) {
+    loginToFoodService(function() {
+        request.post(
+            {
+                url: 'http://localhost:9000/api/products',
+                json: {_id: barcode},
+                headers: {
+                    'Authorization': 'Bearer ' + foodServiceToken
+                }
+            },
+            function (error, response, body) {
+                console.log(response.statusCode);
+                if (!error && response.statusCode == 201) {
+                    foodServiceToken = body.token;
+                    foodServiceTokenRefreshed = Date.now();
+                    console.log('food added');
+                }
+            }
+        );
+    });
+}
+
+function removeFood(barcode) {
+    loginToFoodService(function() {
+        request.del(
+            {
+                url: 'http://localhost:9000/api/products',
+                json: {barcode: barcode},
+                headers: {
+                    'Authorization': 'Bearer ' + foodServiceToken
+                }
+            },
+            function (error, response, body) {
+                console.log(response.statusCode);
+                if (!error && response.statusCode == 200) {
+                    foodServiceToken = body.token;
+                    foodServiceTokenRefreshed = Date.now();
+                    console.log('food deleted');
                 }
             }
         );
