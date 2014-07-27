@@ -23,6 +23,15 @@ angular.module('foodApp')
             });
         }
 
+        $scope.haveAmount = function(group) {
+            return _.reduce($scope.products, function(sum, product) {
+                if (product._groupId === group._id) {
+                    return sum + product.haveAmount;
+                }
+                return sum;
+            }, 0);
+        }
+
         $http.get('/api/groups').success(function(groups) {
             $scope.groups = groups;
             socket.syncUpdates('group', $scope.groups);

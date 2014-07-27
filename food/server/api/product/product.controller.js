@@ -57,15 +57,13 @@ exports.destroy = function(req, res) {
 
 // From the barcode reader
 exports.add = function(req, res) {
-    Product.findOne({code: req.body.code}).populate('_groupId').exec(function (err, product) {
+    Product.findOne({code: req.body.code}, function (err, product) {
         if (err) { return handleError(res, err); }
         if(!product) { return exports.create(req, res); } // just use create method
-        if(!product._groupId) { return res.json(200, product); }
 
-        var group = product._groupId;
-        group.haveAmount += product.addAmount;
+        product.haveAmount += product.addAmount;
 
-        group.save(function (err) {
+        product.save(function (err) {
             if (err) { return handleError(res, err); }
             Entry.create({_productId: product._id, action: "add"});
             return res.json(200, product);
@@ -74,18 +72,16 @@ exports.add = function(req, res) {
 };
 
 exports.remove = function(req, res) {
-    Product.findOne({code: req.params.code}).populate('_groupId').exec(function (err, product) {
+    Product.findOne({code: req.params.code}, function (err, product) {
         if (err) { return handleError(res, err); }
         if(!product) { return res.send(404); }
-        if(!product._groupId) { return res.json(200, product); }
 
-        var group = product._groupId;
-        group.haveAmount -= product.removeAmount;
-        if (group.haveAmount <= 0) {
-            group.haveAmount = 0;
+        product.haveAmount -= product.removeAmount;
+        if (product.haveAmount <= 0) {
+            product.haveAmount = 0;
         }
 
-        group.save(function (err) {
+        product.save(function (err) {
             if (err) { return handleError(res, err); }
             Entry.create({_productId: product._id, action: "remove"});
             return res.json(200, product);

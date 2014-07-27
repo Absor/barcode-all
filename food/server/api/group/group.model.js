@@ -6,7 +6,6 @@ var Product = require('../product/product.model');
 
 var GroupSchema = new Schema({
     name: {type: String, required: true, default: 'New group'},
-    haveAmount: {type: Number, required: true, default: 0},
     needAmount: {type: Number, required: true, default: 0, min: 0}
 });
 

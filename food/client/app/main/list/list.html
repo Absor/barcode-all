@@ -1,7 +1,7 @@
 <h1>We need</h1>
 
 <ul class="list-group">
-    <li class="list-group-item noborder" ng-repeat="group in groups" ng-if="group.haveAmount < group.needAmount">
+    <li class="list-group-item noborder" ng-repeat="group in groups" ng-if="haveAmount(group) < group.needAmount">
         <span class="pull-right">{{group.needAmount - group.haveAmount}}</span>
         {{group.name}}
     </li>
@@ -10,8 +10,12 @@
 <h1>We have</h1>
 
 <ul class="list-group">
-    <li class="list-group-item noborder" ng-repeat="group in groups" ng-if="group.haveAmount > 0">
-        <span class="pull-right">{{group.haveAmount}}</span>
+    <li class="list-group-item noborder" ng-repeat="group in groups" ng-if="haveAmount(group) > 0">
+        <span class="pull-right">{{haveAmount(group)}}</span>
         {{group.name}}
+    </li>
+    <li class="list-group-item noborder" ng-repeat="product in products" ng-if="product.haveAmount > 0 && product._groupId === null">
+        <span class="pull-right">{{product.haveAmount}}</span>
+        {{product.name}}
     </li>
 </ul>
